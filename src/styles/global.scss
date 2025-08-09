@@ -1,0 +1,158 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --text-color: 255 255 255;
+  --bg-color: 27 31 36;
+  --second-bg-color: 34 40 47;
+  --main-color: 19 187 255;
+  --other-color: 195 202 213;
+  /* Card styling tokens */
+  --card-radius: 28px;
+  --card-ring-width: 2px;
+  --card-ring-color: rgb(var(--main-color));
+  --card-shadow-base: 0 2px 14px rgba(0, 0, 0, 0.35);
+  --card-shadow-glow: 0 0 15px rgba(var(--main-color), 0.4);
+  --card-face-bg: #2d343f; /* matches MyProjectsSection face background */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+  text-decoration: none;
+  list-style: none;
+  scroll-behavior: smooth;
+}
+
+$h1-font: 4.5rem;
+$h2-font: 2.9rem;
+$h3-font: 2.2rem;
+$h4-font: 1.6rem;
+$p-font: 1rem;
+
+body {
+  color: rgb(var(--text-color));
+  background: rgb(var(--bg-color));
+}
+
+.nav-item {
+  transition: all 0.5s ease;
+  &:hover {
+    color: rgb(var(--main-color));
+    text-shadow: 3px 3px 20px rgb(var(--main-color)), -2px 1px 30px rgb(var(--text-color));
+  }
+}
+
+.burger-item {
+  transition: all 0.5s ease;
+  &:hover {
+    color: rgb(var(--main-color));
+    text-shadow: 3px 3px 20px rgb(var(--main-color)), -2px 1px 30px rgb(var(--text-color));
+  }
+}
+
+/* Flip card effect for project cards */
+.flip-card {
+  perspective: 1200px;
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow-base);
+  overflow: hidden;
+  position: relative;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+  border-radius: var(--card-radius);
+  will-change: transform;
+}
+
+/* Flip on hover only when there is room for 3 columns (>= xl ~ 1280px) */
+@media (min-width: 1280px) {
+  .flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+  }
+}
+
+/* Click-based flip (applies on all sizes when .is-flipped is toggled) */
+.flip-card.is-flipped .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: var(--card-radius);
+  /* Mask any flip seam with an inset edge matching face bg */
+  box-shadow: inset 0 0 0 1px var(--card-face-bg);
+}
+
+.flip-card-front {
+  z-index: 2;
+}
+
+.flip-card-back {
+  transform: rotateY(180deg);
+}
+
+/* Hover adds glow; blue ring handled by ::after to avoid conflicts */
+.flip-card:hover {
+  box-shadow: var(--card-shadow-glow), var(--card-shadow-base);
+}
+.flip-card.is-flipped {
+  box-shadow: var(--card-shadow-glow);
+}
+
+/* When flipped and hovered, keep/add the blue ring */
+.flip-card.is-flipped:hover {
+  box-shadow: var(--card-shadow-glow), var(--card-shadow-base);
+}
+
+/* Draw a reliable blue ring overlay using a pseudo-element */
+.flip-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--card-radius);
+  pointer-events: none;
+  border: var(--card-ring-width) solid var(--card-ring-color);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+/* Show ring on hover */
+.flip-card:hover::after {
+  opacity: 1;
+}
+
+/* Keep ring in tap mode (on click + icons visible) */
+.flip-card.tap-ring-on::after,
+.flip-card.tap-ring-on:hover::after,
+.flip-card.tap-ring-on.is-flipped::after {
+  opacity: 1;
+}
+
+
+/* (Removed lg-only ring block; pseudo-element handles ring consistently) */
+
+/* Keep native focus outlines (blue) for accessibility */
+
+/* Final override: always show blue ring on small screens (< lg) on both faces */
+@media (max-width: 1023px) {
+  .flip-card::after,
+  .flip-card.is-flipped::after {
+    opacity: 1;
+  }
+}
