@@ -1,6 +1,5 @@
 import Button from "@/components/buttons/Button";
 import SectionTitle from "@/components/custom/SectionTitle";
-import Foto from "@/assets/images/Obraz 220 modified.jpg";
 
 const AboutMeSection = () => {
   // Try to use programmer.png if it exists in /src/assets/images, otherwise fallback to Foto
@@ -9,7 +8,7 @@ const AboutMeSection = () => {
     as: "url",
   }) as Record<string, string>;
   const programmerUrl = assets["/src/assets/images/programmer.png"];
-  const imgSrc = programmerUrl || Foto;
+  const imgSrc = programmerUrl;
 
   return (
     <section
@@ -76,7 +75,7 @@ const AboutMeSection = () => {
                 <i className="ri-award-line text-main text-xl" />
                 <p className="text-text font-semibold">
                   Experience{" "}
-                  <span className="text-other font-normal ml-2">5 Years</span>
+                  <span className="text-other font-normal ml-2">7 Years</span>
                 </p>
               </li>
               <li className="flex items-center gap-3">

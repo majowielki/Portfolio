@@ -43,7 +43,7 @@ const Navbar: React.FC<EnhancedNavbarProps> = ({
           <img 
             src={config.logo.src} 
             alt={config.logo.alt} 
-            className="h-20 ml-10 mt-1 transition-transform duration-300 hover:scale-105" 
+            className="h-28 ml-10 transition-transform duration-300 hover:scale-105" 
           />
         </a>
       </div>

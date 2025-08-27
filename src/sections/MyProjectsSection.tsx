@@ -1,9 +1,9 @@
 import SectionTitle from "@/components/custom/SectionTitle";
 import { useEffect, useState } from "react";
 import Button from "@/components/buttons/Button";
-import proj1 from "@/assets/images/proj1.png";
-import proj2 from "@/assets/images/proj2.png";
-import proj3 from "@/assets/images/proj3.png";
+import proj1 from "@/assets/images/cyber-losowanie.png";
+import proj2 from "@/assets/images/store-app.png";
+import proj3 from "@/assets/images/portfolio-web.png";
 import { TAGS } from "@/config/tags";
 
 const projects = [
@@ -12,8 +12,8 @@ const projects = [
 		description:
 			"Full stack project built with React and .NET API, enabling friends to organize and draw their Secret Santa gift exchanges.",
 		image: proj1,
-		githubUrl: "https://github.com/yourname/ecommerce",
-		liveUrl: "https://demo.example.com/ecommerce",
+		githubUrl: "https://github.com/majowielki/CyberLosowanie",
+		liveUrl: "https://cyberlosowanie20250822170522-csbsa4avhcajb8bx.canadacentral-01.azurewebsites.net/",
 		tags: [
 			TAGS.react,
 			TAGS.typescript,
@@ -33,8 +33,8 @@ const projects = [
 		description:
 			"Full stack e-commerce platform powered by Dockerized API microservices and a modern React front-end.",
 		image: proj2,
-		githubUrl: "https://github.com/yourname/fitness-app",
-		liveUrl: "https://demo.example.com/fitness",
+		githubUrl: "https://github.com/majowielki/Store-app",
+		liveUrl: "https://store-app-ui.mangocoast-91b8ba19.polandcentral.azurecontainerapps.io",
 		tags: [
 			TAGS.react,
 			TAGS.typescript,
@@ -57,8 +57,7 @@ const projects = [
 		description:
 			"A modern, responsive portfolio site built with React and powered by Tailwind CSS for a clean and modern interface.",
 		image: proj3,
-		githubUrl: "https://github.com/yourname/analytics-dashboard",
-		liveUrl: "https://demo.example.com/analytics",
+		githubUrl: "https://github.com/majowielki/Portfolio",
 		tags: [
 			TAGS.react,
 			TAGS.typescript,
@@ -168,12 +167,12 @@ const MyProjectsSection = () => {
 								</div>
 								<div className="flex flex-wrap items-center justify-center gap-3">
 									{project.liveUrl && index !== projects.length - 1 && (
-										<Button as="a" href={project.liveUrl}>
+										<Button as="a" href={project.liveUrl} target="_blank" rel="noopener noreferrer">
 											View Demo
 										</Button>
 									)}
 									{project.githubUrl && (
-										<Button as="a" href={project.githubUrl} variant="outline">
+										<Button as="a" href={project.githubUrl} variant="outline" target="_blank" rel="noopener noreferrer">
 											GitHub
 										</Button>
 									)}

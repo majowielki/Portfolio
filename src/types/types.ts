@@ -27,6 +27,9 @@ export interface ButtonAsButton extends CommonButtonProps {
 export interface ButtonAsLink extends CommonButtonProps {
   as: 'a';
   href: string;
+  target?: string;
+  rel?: string;
+  download?: boolean | string;
 }
 
 export type ButtonProps = ButtonAsButton | ButtonAsLink;

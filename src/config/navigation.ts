@@ -1,5 +1,5 @@
 import { NavConfig } from '@/types/types';
-import logoImage from '@/assets/images/portfolio-logo.png';
+import logoImage from '@/assets/images/MLogo.svg';
 
 // Centralized navigation configuration
 export const NAVIGATION_CONFIG: NavConfig = {

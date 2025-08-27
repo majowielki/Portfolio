@@ -21,8 +21,16 @@ const Button = ({ variant = "primary", className = "", children, ...props }: But
   };
 
   if ('href' in props && props.as === 'a') {
+    const { href, target, rel, download } = props;
     return (
-      <a href={props.href} className={classes} onClick={handleClick}>
+      <a
+        href={href}
+        className={classes}
+        onClick={handleClick}
+        target={target}
+        rel={rel}
+        download={download}
+      >
         {children}
       </a>
     );

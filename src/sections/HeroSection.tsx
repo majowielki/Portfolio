@@ -1,4 +1,4 @@
-import foto from "@/assets/images/Obraz 220 modified.jpg";
+import foto from "@/assets/images/MichalMajewski.png";
 import Button from "@/components/buttons/Button";
 import 'remixicon/fonts/remixicon.css';
 
@@ -8,7 +8,7 @@ const HeroSection = () => {
       id="Home"
       className="flex flex-col min-h-screen gap-10 lg:flex-row lg:*:basis-full justify-center"
     >
-      <div className="flex flex-col self-center gap-y-8 mx-20 lg:gap-y-12 lg:ml-24 lg:mr-10 xl:ml-32">
+      <div className="flex flex-col self-center gap-y-8 px-6 sm:px-10 md:px-12 lg:gap-y-12 lg:ml-24 lg:mr-10 xl:ml-32">
         <div className="space-y-2 lg:space-y-4">
           <h6 className="text-md pl-6 uppercase relative before:content-[''] before:h-1 before:w-4 before:bg-main before:absolute before:top-2/4 before:-translate-y-2/4 before:left-0 xl:text-xl">
             Full Stack .NET Developer
@@ -52,7 +52,9 @@ const HeroSection = () => {
 
           <div className="flex -mt-2 gap-x-4">
             <Button as="a" href="#Projects">View My Projects</Button>
-            <Button variant="outline">Download CV</Button>
+            <Button as="a" href="/Michal-Majewski-CV.pdf" variant="outline" download>
+              Download CV
+            </Button>
           </div>
         </div>
       </div>
