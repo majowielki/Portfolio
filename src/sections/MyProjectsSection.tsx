@@ -34,7 +34,7 @@ const projects = [
 			"Full stack e-commerce platform powered by Dockerized API microservices and a modern React front-end.",
 		image: proj2,
 		githubUrl: "https://github.com/majowielki/Store-app",
-		liveUrl: "https://store-app-ui.mangocoast-91b8ba19.polandcentral.azurecontainerapps.io",
+		liveUrl: "https://store-app-ui-new.mangocoast-91b8ba19.polandcentral.azurecontainerapps.io",
 		tags: [
 			TAGS.react,
 			TAGS.typescript,
