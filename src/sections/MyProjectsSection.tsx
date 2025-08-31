@@ -10,7 +10,7 @@ const projects = [
 	{
 		title: "Cyber Losowanie",
 		description:
-			"Full stack project built with React and .NET API, enabling friends to organize and draw their Secret Santa gift exchanges.",
+			"Full-stack project with a React frontend and a .NET API that enables friends to create a Secret Santa event and draw pairings. Each participant first selects themselves, then opens a “present” to privately reveal the person they’ll be gifting to",
 		image: proj1,
 		githubUrl: "https://github.com/majowielki/CyberLosowanie",
 		liveUrl: "https://cyberlosowanie20250822170522-csbsa4avhcajb8bx.canadacentral-01.azurewebsites.net/",
@@ -31,7 +31,7 @@ const projects = [
 	{
 		title: "E-commerce Store",
 		description:
-			"Full stack e-commerce platform powered by Dockerized API microservices and a modern React front-end.",
+			"Full-stack e-commerce platform for a furniture store, powered by Dockerized API microservices and a modern React front end. Users can search products, make purchases, and try a demo admin dashboard.",
 		image: proj2,
 		githubUrl: "https://github.com/majowielki/Store-app",
 		liveUrl: "https://store-app-ui-new.mangocoast-91b8ba19.polandcentral.azurecontainerapps.io",
