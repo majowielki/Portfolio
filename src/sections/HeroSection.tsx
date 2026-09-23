@@ -1,4 +1,4 @@
-import foto from "@/assets/images/MichalMajewski.png";
+import photo from "@/assets/images/MichalMajewski.webp";
 import Button from "@/components/buttons/Button";
 import 'remixicon/fonts/remixicon.css';
 
@@ -62,11 +62,15 @@ const HeroSection = () => {
       <figure className="hidden lg:flex justify-end items-center w-full lg:mr-24 xl:mr-32">
         <div className="relative">
           <span className="absolute lg:-top-10 lg:-left-10 w-96 h-96 lg:border-[16px] xl:-top-12 xl:-left-12 xl:border-[20px] border-main rounded-lg -z-10"></span>
-          <img
-            src={foto}
-            alt="Showcase"
-            className="rounded-lg shadow-lg w-96 h-96 object-cover"
-          />
+          <picture>
+            <source media="(min-width: 1024px)" srcSet={photo} />
+            <img
+              alt="Michał Majewski"
+              width={384}
+              height={384}
+              className="rounded-lg shadow-lg w-96 h-96 object-cover"
+            />
+          </picture>
         </div>
       </figure>
     </section>

@@ -1,15 +1,8 @@
 import Button from "@/components/buttons/Button";
 import SectionTitle from "@/components/custom/SectionTitle";
+import programmerImage from "@/assets/images/programmer.webp";
 
 const AboutMeSection = () => {
-  // Try to use programmer.png if it exists in /src/assets/images, otherwise fallback to Foto
-  const assets = import.meta.glob("/src/assets/images/*", {
-    eager: true,
-    as: "url",
-  }) as Record<string, string>;
-  const programmerUrl = assets["/src/assets/images/programmer.png"];
-  const imgSrc = programmerUrl;
-
   return (
     <section
       id="AboutMe"
@@ -27,8 +20,12 @@ const AboutMeSection = () => {
         {/* Image over info box */}
         <div className="flex justify-center" data-aos="zoom-in-down">
           <img
-            src={imgSrc}
+            src={programmerImage}
             alt="Michał Majewski"
+            width={900}
+            height={715}
+            loading="lazy"
+            decoding="async"
             className="h-auto w-auto max-w-[360px] md:max-w-[420px] max-h-[32vh] md:max-h-[36vh] rounded-2xl shadow-lg"
           />
         </div>

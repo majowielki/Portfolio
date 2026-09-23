@@ -1,9 +1,9 @@
 import SectionTitle from "@/components/custom/SectionTitle";
 import { useEffect, useState } from "react";
 import Button from "@/components/buttons/Button";
-import proj1 from "@/assets/images/cyber-losowanie.png";
-import proj2 from "@/assets/images/store-app.png";
-import proj3 from "@/assets/images/portfolio-web.png";
+import proj1 from "@/assets/images/cyber-losowanie.webp";
+import proj2 from "@/assets/images/store-app.webp";
+import proj3 from "@/assets/images/portfolio-web.webp";
 import { TAGS } from "@/config/tags";
 
 const projects = [
@@ -125,6 +125,8 @@ const MyProjectsSection = () => {
 								<img
 									src={project.image}
 									alt={project.title}
+									loading="lazy"
+									decoding="async"
 									className="w-full rounded-[24px] mb-4 object-cover"
 									style={{ height: 200 }}
 								/>
