@@ -1,50 +1,64 @@
-# React + TypeScript + Vite
+# Michał Majewski – Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Personal portfolio website of a Full Stack .NET & React developer: about me, skills, projects and a contact form.
 
-Currently, two official plugins are available:
+**Live:** https://lemon-forest-0a1d05503.2.azurestaticapps.net
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+![Portfolio screenshot](public/og-image.jpg)
 
-## Expanding the ESLint configuration
+## Tech stack
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **React 18** + **TypeScript** (strict mode)
+- **Vite 6**
+- **Tailwind CSS 3** + SCSS
+- **tsParticles** – animated background
+- **EmailJS** – contact form without a custom backend
+- **Azure Static Web Apps** + **GitHub Actions** – CI/CD
 
-- Configure the top-level `parserOptions` property like this:
+## Features
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- Single-page layout with smooth scrolling and active section highlighting
+- Responsive design: desktop navbar and mobile burger menu
+- Project flip cards – hover on desktop, tap on smaller screens
+- Contact form with client-side validation, delivered through EmailJS
+- Downloadable CV
+
+## Getting started
+
+Requirements: Node.js 20 or newer.
+
+```bash
+npm install
+npm run dev
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+The app runs at http://localhost:5173.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+| Script | Description |
+| --- | --- |
+| `npm run dev` | Start the dev server with HMR |
+| `npm run build` | Type-check and build for production into `dist/` |
+| `npm run preview` | Serve the production build locally |
+| `npm run lint` | Run ESLint |
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+## Project structure
+
 ```
+src/
+  components/   reusable UI: buttons, navbar, background, layout
+  config/       navigation, project tags, EmailJS settings
+  contexts/     global UI state
+  hooks/        scroll-related hooks
+  sections/     page sections: Hero, About, Skills, Projects, Contact
+  styles/       global styles and Tailwind layers
+public/         static files: CV, icons, Open Graph image
+```
+
+## Deployment
+
+Every push to `master` runs the GitHub Actions workflow in `.github/workflows`, which builds the app and deploys it to Azure Static Web Apps. Pull requests get their own preview environment.
+
+## Contact
+
+- [LinkedIn](https://www.linkedin.com/in/micha%C5%82-majewski-/)
+- [GitHub](https://github.com/majowielki)
