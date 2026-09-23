@@ -13,7 +13,7 @@
   --card-ring-width: 2px;
   --card-ring-color: rgb(var(--main-color));
   --card-shadow-base: 0 2px 14px rgba(0, 0, 0, 0.35);
-  --card-shadow-glow: 0 0 15px rgba(var(--main-color), 0.4);
+  --card-shadow-glow: 0 0 15px rgb(var(--main-color) / 0.4);
   --card-face-bg: #2d343f; /* matches MyProjectsSection face background */
 }
 

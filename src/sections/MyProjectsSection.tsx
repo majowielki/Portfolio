@@ -110,8 +110,7 @@ const MyProjectsSection = () => {
 				</SectionTitle>
 			</div>
 
-			{/* Projects Grid - fixed column widths per breakpoint */}
-			<div className="w-full max-w-6xl lg:max-w-7xl grid [grid-template-columns:repeat(1,340px)] md:[grid-template-columns:repeat(2,340px)] xl:[grid-template-columns:repeat(3,360px)] justify-center gap-6 md:gap-8 xl:gap-10 items-stretch">
+			<div className="w-full max-w-6xl lg:max-w-7xl grid grid-cols-[minmax(0,340px)] md:grid-cols-[repeat(2,minmax(0,340px))] xl:grid-cols-[repeat(3,minmax(0,360px))] justify-center gap-6 md:gap-8 xl:gap-10 items-stretch">
 				{projects.map((project, index) => (
 					<div
 						key={project.title}

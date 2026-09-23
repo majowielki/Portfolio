@@ -13,7 +13,7 @@ const HeroSection = () => {
           <h6 className="text-md pl-6 uppercase relative before:content-[''] before:h-1 before:w-4 before:bg-main before:absolute before:top-2/4 before:-translate-y-2/4 before:left-0 xl:text-xl">
             Full Stack .NET Developer
           </h6>
-          <h1 className="font-bold text-7xl xl:text-8xl">
+          <h1 className="font-bold leading-none text-[length:clamp(3rem,17vw,4.5rem)] sm:text-7xl xl:text-8xl">
             Michał Majewski
           </h1>
         </div>
