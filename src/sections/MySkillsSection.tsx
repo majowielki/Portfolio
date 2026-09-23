@@ -15,7 +15,6 @@ const MySkillsSection = () => (
     {/* Skills Grid */}
     <div
       className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-12 items-center"
-      data-aos="zoom-in-up"
     >
       {/* Backend */}
       <div className="flex flex-col items-center bg-[#2d343f] rounded-[28px] border border-transparent shadow-[0_0_20px_rgb(var(--main-color))] p-10 min-h-[370px] max-w-[340px] mx-auto transition-all duration-500 hover:border-main hover:scale-[1.03] cursor-pointer">

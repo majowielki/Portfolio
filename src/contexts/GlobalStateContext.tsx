@@ -13,11 +13,6 @@ export const useGlobalState = (): GlobalState => {
 
 export const GlobalStateProvider = ({ children }: GlobalStateProviderProps) => {
   const [isMenuOpen, setMenuOpen] = useState<boolean>(false);
-  const [isModalOpen, setModalOpen] = useState<boolean>(false);
-
-  const toggleModal = (): void => {
-    setModalOpen(prevState => !prevState);
-  };
 
   const toggleMenu = (): void => {
     setMenuOpen(prevState => !prevState);
@@ -27,17 +22,10 @@ export const GlobalStateProvider = ({ children }: GlobalStateProviderProps) => {
     setMenuOpen(false);
   };
 
-  const exitModal = (): void => {
-    setModalOpen(false);
-  };
-
   const value: GlobalState = {
     isMenuOpen,
     toggleMenu,
-    isModalOpen,
-    toggleModal,
     exitMenu,
-    exitModal,
   };
   return (
     <GlobalStateContext.Provider value={value}>

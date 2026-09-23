@@ -6,7 +6,6 @@ import MyProjectsSection from "@/sections/MyProjectsSection";
 import MySkillsSection from "@/sections/MySkillsSection";
 import ContactMeSection from "@/sections/ContactMeSection";
 import { GlobalStateProvider } from "@/contexts/GlobalStateContext";
-import Modal from "@/components/navbar/Modal";
 import BurgerMenu from "@/components/navbar/BurgerMenu";
 import WebsiteLayoutContainer from "@/components/layout/WebsiteLayoutContainer";
 import SectionsBackgroundContainer from "@/components/background/SectionsBackgroundContainer";
@@ -18,7 +17,6 @@ const Homescreen = () => {
       <WebsiteLayoutContainer>
         <SectionsBackgroundContainer/>
         <Navbar />
-        <Modal />
         <BurgerMenu />
         <HeroSection />
         <AboutMeSection />

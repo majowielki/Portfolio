@@ -101,33 +101,22 @@ const ContactMe = () => {
     setSubmitStatus('idle');
 
     try {
-      // Check if EmailJS is configured
-      if (EMAILJS_CONFIG.serviceId === 'YOUR_SERVICE_ID') {
-        // Show configuration message if not set up
-        alert('📧 EmailJS not configured yet!\n\nTo enable email sending:\n1. Go to https://www.emailjs.com/\n2. Create an account\n3. Update src/config/emailjs.ts with your credentials\n\nFor now, check the console to see the form data.');
-        console.log('Form data that would be sent:', formData);
-        throw new Error('EmailJS not configured');
-      }
-
       // Prepare email template parameters
       const templateParams: EmailTemplateParams = {
         from_name: formData.name,
         from_email: formData.email,
         subject: formData.subject,
         message: formData.message,
-        to_email: 'your-email@example.com', // Replace with your email
       };
 
       // Send email using EmailJS
-      const response = await emailjs.send(
+      await emailjs.send(
         EMAILJS_CONFIG.serviceId,
         EMAILJS_CONFIG.templateId,
         templateParams,
         EMAILJS_CONFIG.publicKey
       );
 
-      console.log('Email sent successfully:', response);
-      
       // Reset form on success
       setFormData({
         name: "",
@@ -156,7 +145,7 @@ const ContactMe = () => {
       className="w-full min-h-screen flex flex-col items-center justify-center px-4 py-12"
       id="Contact"
     >
-      <div className="w-full flex justify-center mb-12 md:mb-16" data-aos="fade-down">
+      <div className="w-full flex justify-center mb-12 md:mb-16">
         <SectionTitle>
           Contact <span className="text-main">Me</span>
         </SectionTitle>
@@ -180,7 +169,6 @@ const ContactMe = () => {
           className="relative w-full bg-transparent mt-0 md:mt-2"
           autoComplete="off"
           onSubmit={handleSubmit}
-          data-aos="zoom-in"
         >
            {/* Name Field */}
            <div className="mb-5">

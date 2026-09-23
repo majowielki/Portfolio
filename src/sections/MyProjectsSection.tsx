@@ -167,7 +167,7 @@ const MyProjectsSection = () => {
 									))}
 								</div>
 								<div className="flex flex-wrap items-center justify-center gap-3">
-									{project.liveUrl && index !== projects.length - 1 && (
+									{project.liveUrl && (
 										<Button as="a" href={project.liveUrl} target="_blank" rel="noopener noreferrer">
 											View Demo
 										</Button>

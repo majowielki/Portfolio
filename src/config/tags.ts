@@ -65,5 +65,3 @@ export const TAGS: Record<TagKey, Tag> = {
   // Testing
   xunit: { key: "xunit", label: "xUnit", color: COLOR_TESTING },
 };
-
-// Helpers removed since we no longer expose groups from here

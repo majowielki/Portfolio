@@ -5,7 +5,6 @@ import { loadFull } from "tsparticles";
 const ParticlesBackground = () => {
   const [init, setInit] = useState(false);
   useEffect(() => {
-    console.log("init");
     initParticlesEngine(async (engine) => {
       await loadFull(engine);
     }).then(() => {
@@ -13,14 +12,11 @@ const ParticlesBackground = () => {
     });
   }, []);
 
-  const particlesLoaded = async () => {};
-
   return (
     <>
       {init && (
         <Particles
           id="tsparticles"
-          particlesLoaded={particlesLoaded}
           style={{
             zIndex: 1,
           }}

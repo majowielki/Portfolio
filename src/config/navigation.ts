@@ -36,15 +36,6 @@ export const NAVIGATION_CONFIG: NavConfig = {
   ]
 };
 
-// Navigation utilities
-export const getNavItemById = (id: string) => {
-  return NAVIGATION_CONFIG.items.find(item => item.id === id);
-};
-
-export const getNavItemBySection = (section: string) => {
-  return NAVIGATION_CONFIG.items.find(item => item.section === section);
-};
-
 export const getAllSections = () => {
   return NAVIGATION_CONFIG.items.map(item => item.section);
 };

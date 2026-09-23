@@ -18,7 +18,7 @@ const AboutMeSection = () => {
       {/* Content: Image and Experience/Text */}
       <div className="w-full max-w-5xl flex flex-col items-center gap-6">
         {/* Image over info box */}
-        <div className="flex justify-center" data-aos="zoom-in-down">
+        <div className="flex justify-center">
           <img
             src={programmerImage}
             alt="Michał Majewski"
@@ -31,7 +31,7 @@ const AboutMeSection = () => {
         </div>
 
         {/* Info card */}
-        <div className="w-full" data-aos="zoom-in-up">
+        <div className="w-full">
           <div className="bg-[#2d343f] rounded-2xl border border-transparent shadow-[0_0_10px_rgb(var(--main-color))] p-6 md:p-8 transition hover:border-main lg:flex lg:flex-col lg:items-center lg:justify-center">
             <h2 className="text-3xl md:text-4xl xl:text-4xl font-semibold mb-6 leading-snug text-center">
               I am{" "}

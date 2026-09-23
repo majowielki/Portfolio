@@ -13,5 +13,4 @@ export interface EmailTemplateParams extends Record<string, unknown> {
   from_email: string;
   subject: string;
   message: string;
-  to_email?: string; // Optional: specify recipient email
 }

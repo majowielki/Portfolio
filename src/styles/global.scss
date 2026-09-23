@@ -144,11 +144,6 @@ body {
   opacity: 1;
 }
 
-
-/* (Removed lg-only ring block; pseudo-element handles ring consistently) */
-
-/* Keep native focus outlines (blue) for accessibility */
-
 /* Final override: always show blue ring on small screens (< lg) on both faces */
 @media (max-width: 1023px) {
   .flip-card::after,
