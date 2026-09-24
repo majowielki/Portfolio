@@ -1,31 +1,40 @@
 import ParticlesBackground from "@/components/background/ParticlesBackground";
-import Navbar from "@/components/navbar/Navbar";
-import HeroSection from "@/sections/HeroSection";
+import DesignSwitcher from "@/components/layout/DesignSwitcher";
+import Footer from "@/components/layout/Footer";
+import Header from "@/components/layout/Header";
+import { useRevealOnScroll } from "@/hooks/useRevealOnScroll";
 import AboutMeSection from "@/sections/AboutMeSection";
+import ContactMeSection from "@/sections/ContactMeSection";
+import HeroSection from "@/sections/HeroSection";
 import MyProjectsSection from "@/sections/MyProjectsSection";
 import MySkillsSection from "@/sections/MySkillsSection";
-import ContactMeSection from "@/sections/ContactMeSection";
-import { GlobalStateProvider } from "@/contexts/GlobalStateContext";
-import BurgerMenu from "@/components/navbar/BurgerMenu";
-import WebsiteLayoutContainer from "@/components/layout/WebsiteLayoutContainer";
-import SectionsBackgroundContainer from "@/components/background/SectionsBackgroundContainer";
 
 const Homescreen = () => {
+  useRevealOnScroll();
+
   return (
-    <GlobalStateProvider>
+    <>
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-main focus:px-4 focus:py-2 focus:font-semibold focus:text-bg"
+      >
+        Skip to content
+      </a>
       <ParticlesBackground />
-      <WebsiteLayoutContainer>
-        <SectionsBackgroundContainer/>
-        <Navbar />
-        <BurgerMenu />
-        <HeroSection />
-        <AboutMeSection />
-        <MySkillsSection />
-        <MyProjectsSection />
-        <ContactMeSection />
-      </WebsiteLayoutContainer>
-    </GlobalStateProvider>
+      <div className="site-frame">
+        <Header />
+        <main id="main">
+          <HeroSection />
+          <AboutMeSection />
+          <MySkillsSection />
+          <MyProjectsSection />
+          <ContactMeSection />
+        </main>
+        <Footer />
+      </div>
+      <DesignSwitcher />
+    </>
   );
-}
+};
 
 export default Homescreen;

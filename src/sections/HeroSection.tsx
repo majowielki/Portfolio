@@ -1,81 +1,100 @@
 import photo from "@/assets/images/MichalMajewski.webp";
-import Button from "@/components/buttons/Button";
-import 'remixicon/fonts/remixicon.css';
+import { ButtonLink } from "@/components/ui/Button";
+import RotatingWords from "@/components/ui/RotatingWords";
+import SocialLinks from "@/components/ui/SocialLinks";
+import { profile } from "@/content/profile";
 
-const HeroSection = () => {
-  return (
-    <section
-      id="Home"
-      className="flex flex-col min-h-screen gap-10 lg:flex-row lg:*:basis-full justify-center"
-    >
-      <div className="flex flex-col self-center gap-y-8 px-6 sm:px-10 md:px-12 lg:gap-y-12 lg:ml-24 lg:mr-10 xl:ml-32">
-        <div className="space-y-2 lg:space-y-4">
-          <h6 className="text-md pl-6 uppercase relative before:content-[''] before:h-1 before:w-4 before:bg-main before:absolute before:top-2/4 before:-translate-y-2/4 before:left-0 xl:text-xl">
-            Full Stack .NET Developer
-          </h6>
-          <h1 className="font-bold leading-none text-[length:clamp(3rem,17vw,4.5rem)] sm:text-7xl xl:text-8xl">
-            Michał Majewski
-          </h1>
-        </div>
+const HeroSection = () => (
+  <section
+    id="Home"
+    className="relative flex min-h-svh items-center overflow-hidden pb-14 pt-[calc(var(--header-h)+3.5rem)] md:pb-20 md:pt-[calc(var(--header-h)+5rem)]"
+  >
+    <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+      <div className="absolute -right-[10%] -top-[25%] h-[40rem] w-[40rem] rounded-full bg-main/[0.12] blur-[140px]" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgb(var(--line-color)/0.04)_1px,transparent_1px),linear-gradient(90deg,rgb(var(--line-color)/0.04)_1px,transparent_1px)] bg-[size:80px_80px] [mask-image:radial-gradient(ellipse_70%_60%_at_60%_40%,#000_20%,transparent_75%)]" />
+    </div>
 
-        <div className="flex flex-col gap-y-8 lg:pl-16 lg:relative lg:before:content-[''] lg:before:h-full lg:before:w-5 lg:before:bg-main lg:before:absolute lg:before:top-0 lg:before:left-0">
-          <div className="flex -mb-4 lg:-mb-5 gap-x-4">
-            <a
-              href="https://www.linkedin.com/in/micha%C5%82-majewski-/"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="LinkedIn"
-            >
-              <i className="ri-linkedin-box-fill inline-flex items-center justify-center w-10 h-10 text-main rounded-full [backdrop-filter:brightness(88%)] text-[20px] mr-[17px] shadow-[0_0_20px_transparent] cursor-pointer transition-all duration-500 hover:scale-110 hover:shadow-[0_0_20px_rgb(var(--main-color))]" />
-            </a>
-            <a
-              href="https://github.com/majowielki"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="GitHub"
-            >
-              <i className="ri-github-fill inline-flex items-center justify-center w-10 h-10 text-main rounded-full [backdrop-filter:brightness(88%)] text-[20px] mr-[17px] shadow-[0_0_20px_transparent] cursor-pointer transition-all duration-500 hover:scale-110 hover:shadow-[0_0_20px_rgb(var(--main-color))]" />
-            </a>
-            <a
-              href="https://www.facebook.com/majo1337"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Facebook"
-            >
-              <i className="ri-facebook-circle-fill inline-flex items-center justify-center w-10 h-10 text-main rounded-full [backdrop-filter:brightness(88%)] text-[20px] mr-[17px] shadow-[0_0_20px_transparent] cursor-pointer transition-all duration-500 hover:scale-110 hover:shadow-[0_0_20px_rgb(var(--main-color))]" />
-            </a>
-          </div>
+    <div className="container-x relative grid items-center gap-16 lg:grid-cols-[minmax(0,1fr)_auto] xl:gap-24">
+      <div>
+        <p className="eyebrow flex animate-fade-up items-center gap-3 text-text/80">
+          <img
+            src={photo}
+            alt=""
+            width={44}
+            height={44}
+            className="h-11 w-11 rounded-full object-cover ring-2 ring-main/70 ring-offset-2 ring-offset-bg lg:hidden"
+          />
+          <span className="accent-dash hidden lg:inline-block" aria-hidden="true" />
+          {profile.role}
+        </p>
 
-          <p className="max-w-lg lg:text-lg xl:text-2xl">
-            Hello there! Welcome to my portfolio. Here, you’ll find projects and ideas showcasing my expertise in .NET APIs, modern React SPAs, and cloud-ready architectures.
+        <h1 className="mt-6 text-[length:clamp(3.25rem,15vw,6.5rem)] font-bold leading-[0.92] tracking-[-0.035em] xl:text-[7.25rem]">
+          <span className="line-mask">
+            <span className="block animate-line-up [animation-delay:120ms]">{profile.firstName}</span>
+          </span>
+          <span className="line-mask">
+            <span className="block animate-line-up [animation-delay:240ms]">
+              {profile.lastName}
+              <span className="text-main">.</span>
+            </span>
+          </span>
+        </h1>
+
+        <div className="relative mt-10 animate-fade-up pl-6 [animation-delay:400ms] md:pl-10">
+          <span
+            className="absolute inset-y-0 left-0 w-stroke origin-top animate-grow-y bg-main [animation-delay:500ms] shadow-[0_0_14px_rgb(var(--main-color)/0.6)]"
+            aria-hidden="true"
+          />
+          <p className="text-2xl font-medium leading-tight md:text-3xl">
+            <span className="text-other">I build</span>
+            <br />
+            <RotatingWords words={["robust .NET APIs", "modern React SPAs", "cloud-ready systems"]} className="text-main" />
+          </p>
+          <p className="mt-5 max-w-xl text-base leading-relaxed text-other md:text-lg">
+            Hello there! Welcome to my portfolio. Here, you’ll find projects and ideas I’ve designed and shipped end to
+            end – from clean backend architecture all the way to polished, type-safe interfaces.
           </p>
 
-          <div className="flex -mt-2 gap-x-4">
-            <Button as="a" href="#Projects">View My Projects</Button>
-            <Button as="a" href="/Michal-Majewski-CV.pdf" variant="outline" download>
-              Download CV
-            </Button>
+          <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-5">
+            <div className="flex flex-wrap gap-3">
+              <ButtonLink href="#Projects">
+                View My Projects
+                <i className="ri-arrow-right-line group-hover/button:translate-x-0.5" aria-hidden="true" />
+              </ButtonLink>
+              <ButtonLink href={profile.cvUrl} variant="outline" download>
+                Download CV
+                <i className="ri-download-2-line group-hover/button:translate-y-0.5" aria-hidden="true" />
+              </ButtonLink>
+            </div>
+            <SocialLinks />
           </div>
         </div>
       </div>
 
-      <figure className="hidden lg:flex justify-end items-center w-full lg:mr-24 xl:mr-32">
-        <div className="relative">
-          <span className="absolute lg:-top-10 lg:-left-10 w-96 h-96 lg:border-[16px] xl:-top-12 xl:-left-12 xl:border-[20px] border-main rounded-lg -z-10"></span>
-          <picture>
-            <source media="(min-width: 1024px)" srcSet={photo} />
-            <img
-              alt="Michał Majewski"
-              width={384}
-              height={384}
-              className="rounded-lg shadow-lg w-96 h-96 object-cover"
-            />
-          </picture>
+      <figure className="group relative mr-2 hidden animate-fade-up [animation-delay:350ms] lg:block">
+        <span
+          className="absolute -left-7 -top-7 h-full w-full rounded-2xl border-stroke border-main shadow-[0_0_24px_-6px_rgb(var(--main-color)/0.6)] transition-transform duration-700 ease-expo group-hover:-translate-x-2 group-hover:-translate-y-2"
+          aria-hidden="true"
+        />
+        <div className="relative aspect-[4/5] w-[20rem] overflow-hidden rounded-2xl bg-sec shadow-[0_30px_70px_rgb(0_0_0/0.55)] xl:w-[23rem]">
+          <img
+            src={photo}
+            alt={profile.name}
+            width={768}
+            height={768}
+            className="h-full w-full object-cover transition-transform duration-1000 ease-expo group-hover:scale-[1.03]"
+          />
         </div>
+        <figcaption className="absolute -bottom-5 -right-5 flex items-center gap-2.5 rounded-full border border-line/10 bg-bg/85 px-4 py-2 font-mono text-xs shadow-lg backdrop-blur-md xl:text-sm">
+          <span className="relative flex h-2 w-2" aria-hidden="true">
+            <span className="absolute inline-flex h-full w-full animate-pulse-ring rounded-full bg-main" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-main" />
+          </span>
+          {profile.experienceYears}+ years of experience
+        </figcaption>
       </figure>
-    </section>
-  );
-}
+    </div>
+  </section>
+);
 
 export default HeroSection;
-  

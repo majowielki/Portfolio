@@ -1,263 +1,280 @@
-import { useState } from "react";
-import emailjs from '@emailjs/browser';
-import Button from "@/components/buttons/Button";
-import { ContactFormData, ContactFormErrors } from "@/types/types";
+import { ChangeEvent, CSSProperties, FocusEvent, FormEvent, useEffect, useRef, useState } from "react";
+import emailjs from "@emailjs/browser";
+import { Button } from "@/components/ui/Button";
+import CopyButton from "@/components/ui/CopyButton";
+import FormField from "@/components/ui/FormField";
+import SectionHeading from "@/components/ui/SectionHeading";
 import { EMAILJS_CONFIG, EmailTemplateParams } from "@/config/emailjs";
-import SectionTitle from "@/components/custom/SectionTitle";
+import { profile, socials } from "@/content/profile";
+import { useLocalTime } from "@/hooks/useLocalTime";
+import { ContactFormData, ContactFormErrors } from "@/types/types";
+import { trackGlow } from "@/utils/glow";
 
-const ContactMe = () => {
-  const [formData, setFormData] = useState<ContactFormData>({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  });
+type SubmitStatus = "idle" | "success" | "error";
+type FieldElement = HTMLInputElement | HTMLTextAreaElement;
 
+const emptyForm: ContactFormData = { name: "", email: "", subject: "", message: "" };
+
+const validateField = (name: keyof ContactFormData, value: string): string | undefined => {
+  const trimmed = value.trim();
+
+  switch (name) {
+    case "name":
+      if (!trimmed) return "Name is required";
+      if (trimmed.length < 2) return "Name must be at least 2 characters";
+      return undefined;
+    case "email":
+      if (!trimmed) return "Email is required";
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return "Please enter a valid email address";
+      return undefined;
+    case "subject":
+      if (!trimmed) return "Subject is required";
+      if (trimmed.length < 5) return "Subject must be at least 5 characters";
+      return undefined;
+    case "message":
+      if (!trimmed) return "Message is required";
+      if (trimmed.length < 10) return "Message must be at least 10 characters";
+      return undefined;
+  }
+};
+
+interface ContactRowProps {
+  icon: string;
+  label: string;
+  value: string;
+  href?: string;
+  external?: boolean;
+  copyValue?: string;
+}
+
+const ContactRow = ({ icon, label, value, href, external, copyValue }: ContactRowProps) => (
+  <li className="group relative flex items-center gap-4 px-4 py-4 transition-colors duration-300 first:rounded-t-3xl last:rounded-b-3xl hover:bg-line/[0.025] sm:px-5">
+    <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-main/10 text-xl text-main ring-1 ring-inset ring-main/20">
+      <i className={icon} aria-hidden="true" />
+    </span>
+    <span className="min-w-0 flex-1">
+      <span className="block font-mono text-[11px] uppercase tracking-wider text-other/70">{label}</span>
+      {href ? (
+        <a
+          href={href}
+          target={external ? "_blank" : undefined}
+          rel={external ? "noopener noreferrer" : undefined}
+          className="block truncate font-medium transition-colors after:absolute after:inset-0 group-hover:text-main"
+        >
+          {value}
+        </a>
+      ) : (
+        <span className="block truncate font-medium">{value}</span>
+      )}
+    </span>
+    {copyValue && <CopyButton value={copyValue} label={label.toLowerCase()} />}
+    {external && (
+      <i
+        className="ri-arrow-right-up-line text-lg text-other transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-main"
+        aria-hidden="true"
+      />
+    )}
+  </li>
+);
+
+const ContactMeSection = () => {
+  const [formData, setFormData] = useState<ContactFormData>(emptyForm);
   const [errors, setErrors] = useState<ContactFormErrors>({});
+  const [wasSubmitted, setWasSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [submitStatus, setSubmitStatus] = useState<SubmitStatus>("idle");
+  const statusTimeout = useRef<number>();
+  const localTime = useLocalTime(profile.timeZone);
 
-  const validateField = (name: keyof ContactFormData, value: string): string | undefined => {
-    switch (name) {
-      case 'name':
-        if (!value.trim()) return 'Name is required';
-        if (value.trim().length < 2) return 'Name must be at least 2 characters';
-        return undefined;
-      
-      case 'email':
-        if (!value.trim()) return 'Email is required';
-        {
-          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-          if (!emailRegex.test(value)) return 'Please enter a valid email address';
-        }
-        return undefined;
-      
-      case 'subject':
-        if (!value.trim()) return 'Subject is required';
-        if (value.trim().length < 5) return 'Subject must be at least 5 characters';
-        return undefined;
-      
-      case 'message':
-        if (!value.trim()) return 'Message is required';
-        if (value.trim().length < 10) return 'Message must be at least 10 characters';
-        return undefined;
-      
-      default:
-        return undefined;
+  useEffect(() => () => window.clearTimeout(statusTimeout.current), []);
+
+  const showStatus = (status: SubmitStatus) => {
+    window.clearTimeout(statusTimeout.current);
+    setSubmitStatus(status);
+    statusTimeout.current = window.setTimeout(() => setSubmitStatus("idle"), 6000);
+  };
+
+  const setFieldError = (name: keyof ContactFormData, value: string) =>
+    setErrors((prev) => ({ ...prev, [name]: validateField(name, value) }));
+
+  const handleChange = (event: ChangeEvent<FieldElement>) => {
+    const name = event.target.name as keyof ContactFormData;
+    const { value } = event.target;
+
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (wasSubmitted || errors[name]) {
+      setFieldError(name, value);
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    const fieldName = name as keyof ContactFormData;
-    
-    setFormData(prev => ({
-      ...prev,
-      [fieldName]: value
-    }));
-
-    // Clear error when user starts typing
-    if (errors[fieldName]) {
-      setErrors(prev => ({
-        ...prev,
-        [fieldName]: undefined
-      }));
-    }
-
-    // Real-time validation (optional - you can remove this if you prefer validation only on submit)
-    const error = validateField(fieldName, value);
-    if (error) {
-      setErrors(prev => ({
-        ...prev,
-        [fieldName]: error
-      }));
+  const handleBlur = (event: FocusEvent<FieldElement>) => {
+    const name = event.target.name as keyof ContactFormData;
+    if (wasSubmitted || event.target.value.trim()) {
+      setFieldError(name, event.target.value);
     }
   };
 
-  const validateForm = (): boolean => {
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+    setWasSubmitted(true);
+
     const newErrors: ContactFormErrors = {};
-    let isValid = true;
-
-    (Object.keys(formData) as Array<keyof ContactFormData>).forEach(field => {
-      const error = validateField(field, formData[field]);
-      if (error) {
-        newErrors[field] = error;
-        isValid = false;
-      }
+    (Object.keys(formData) as (keyof ContactFormData)[]).forEach((field) => {
+      newErrors[field] = validateField(field, formData[field]);
     });
-
     setErrors(newErrors);
-    return isValid;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!validateForm()) {
-      return;
-    }
+    if (Object.values(newErrors).some(Boolean)) return;
 
     setIsSubmitting(true);
-    setSubmitStatus('idle');
-
     try {
-      // Prepare email template parameters
       const templateParams: EmailTemplateParams = {
         from_name: formData.name,
         from_email: formData.email,
         subject: formData.subject,
         message: formData.message,
       };
+      await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, templateParams, EMAILJS_CONFIG.publicKey);
 
-      // Send email using EmailJS
-      await emailjs.send(
-        EMAILJS_CONFIG.serviceId,
-        EMAILJS_CONFIG.templateId,
-        templateParams,
-        EMAILJS_CONFIG.publicKey
-      );
-
-      // Reset form on success
-      setFormData({
-        name: "",
-        email: "",
-        subject: "",
-        message: "",
-      });
-      setSubmitStatus('success');
-      
-      // Clear success message after 5 seconds
-      setTimeout(() => setSubmitStatus('idle'), 5000);
-      
+      setFormData(emptyForm);
+      setWasSubmitted(false);
+      showStatus("success");
     } catch (error) {
-      console.error('Email sending failed:', error);
-      setSubmitStatus('error');
-      
-      // Clear error message after 5 seconds
-      setTimeout(() => setSubmitStatus('idle'), 5000);
+      console.error("Email sending failed:", error);
+      showStatus("error");
     } finally {
       setIsSubmitting(false);
     }
   };
-  
+
+  const fieldProps = (name: keyof ContactFormData) => ({
+    name,
+    value: formData[name],
+    error: errors[name],
+    onChange: handleChange,
+    onBlur: handleBlur,
+  });
+
+  const professionalSocials = socials.filter((social) => social.label !== "Facebook");
+
   return (
-    <section
-      className="w-full min-h-screen flex flex-col items-center justify-center px-4 py-12"
-      id="Contact"
-    >
-      <div className="w-full flex justify-center mb-12 md:mb-16">
-        <SectionTitle>
+    <section id="Contact" className="py-24 md:py-32">
+      <div className="container-x">
+        <SectionHeading index="04" label="Contact">
           Contact <span className="text-main">Me</span>
-        </SectionTitle>
-      </div>
-      
-  {/* Constrained container for messages + form */}
-  <div className="w-full max-w-[900px] mx-auto space-y-6 px-6 sm:px-8">
-        {/* Status Messages */}
-        {submitStatus === 'success' && (
-          <div className="mb-6 p-4 bg-green-500/20 border border-green-500 rounded-lg text-green-400 text-center">
-            ✅ Email sent successfully! I'll get back to you soon.
-          </div>
-        )}
-        {submitStatus === 'error' && (
-          <div className="mb-6 p-4 bg-red-500/20 border border-red-500 rounded-lg text-red-400 text-center">
-            ❌ Failed to send email. Please try again or contact me directly.
-          </div>
-        )}
+        </SectionHeading>
 
-        <form
-          className="relative w-full bg-transparent mt-0 md:mt-2"
-          autoComplete="off"
-          onSubmit={handleSubmit}
-        >
-           {/* Name Field */}
-           <div className="mb-5">
-             <input
-               type="text"
-               name="name"
-               placeholder="Your name"
-               value={formData.name}
-               onChange={handleInputChange}
-               className={`w-full p-5 border-none outline-none shadow-[0_0_5px_rgb(var(--main-color))] bg-[#2d343f] text-text rounded-lg placeholder:text-other placeholder:text-[15px] transition ${
-                 errors.name ? 'shadow-[0_0_5px_#ef4444]' : ''
-               }`}
-             />
-             {errors.name && (
-               <p className="text-red-400 text-sm mt-2 ml-2">⚠️ {errors.name}</p>
-             )}
-           </div>
+        <div className="grid grid-cols-[minmax(0,1fr)] gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
+          <div data-reveal>
+            <h3 className="text-3xl font-bold leading-tight tracking-tight md:text-4xl">
+              Let’s build something <span className="text-main">together</span>.
+            </h3>
+            <p className="mt-4 text-lg leading-relaxed text-other">
+              Have a project in mind, a job opportunity or just want to say hi? Send me a message or reach out
+              directly.
+            </p>
 
-          {/* Email Field */}
-          <div className="mb-5">
-            <input
-              type="email"
-              name="email"
-              placeholder="Email Address..."
-              value={formData.email}
-              onChange={handleInputChange}
-              className={`w-full p-5 border-none outline-none shadow-[0_0_5px_rgb(var(--main-color))] bg-[#2d343f] text-text rounded-lg placeholder:text-other placeholder:text-[15px] transition ${
-                errors.email ? 'shadow-[0_0_5px_#ef4444]' : ''
-              }`}
-            />
-            {errors.email && (
-              <p className="text-red-400 text-sm mt-2 ml-2">⚠️ {errors.email}</p>
-            )}
+            <ul
+              data-glow
+              onPointerMove={trackGlow}
+              className="glow-card mt-10 divide-y divide-line/[0.07] rounded-3xl border border-line/10 bg-card/50"
+            >
+              <ContactRow
+                icon="ri-mail-line"
+                label="Email"
+                value={profile.email}
+                href={`mailto:${profile.email}`}
+                copyValue={profile.email}
+              />
+              <ContactRow
+                icon="ri-phone-line"
+                label="Phone"
+                value={profile.phone}
+                href={`tel:${profile.phone.replace(/\s/g, "")}`}
+                copyValue={profile.phone}
+              />
+              <ContactRow icon="ri-map-pin-line" label="Location" value={`${profile.location} · ${localTime}`} />
+              {professionalSocials.map((social) => (
+                <ContactRow
+                  key={social.label}
+                  icon={social.icon}
+                  label={social.label}
+                  value={decodeURIComponent(social.href.replace(/^https:\/\/(www\.)?/, "").replace(/\/$/, ""))}
+                  href={social.href}
+                  external
+                />
+              ))}
+            </ul>
           </div>
 
-          {/* Subject Field */}
-          <div className="mb-5">
-            <input
-              type="text"
-              name="subject"
-              placeholder="Subject..."
-              value={formData.subject}
-              onChange={handleInputChange}
-              className={`w-full p-5 border-none outline-none shadow-[0_0_5px_rgb(var(--main-color))] bg-[#2d343f] text-text rounded-lg placeholder:text-other placeholder:text-[15px] transition ${
-                errors.subject ? 'shadow-[0_0_5px_#ef4444]' : ''
-              }`}
-            />
-            {errors.subject && (
-              <p className="text-red-400 text-sm mt-2 ml-2">⚠️ {errors.subject}</p>
-            )}
-          </div>
-
-          {/* Message Field */}
-          <div className="mb-5">
-            <textarea
-              name="message"
-              cols={30}
-              rows={7}
-              placeholder="Write Message Here."
-              value={formData.message}
-              onChange={handleInputChange}
-              className={`w-full p-5 border-none outline-none shadow-[0_0_5px_rgb(var(--main-color))] bg-[#2d343f] text-text rounded-lg placeholder:text-other placeholder:text-[15px] transition resize-none ${
-                errors.message ? 'shadow-[0_0_5px_#ef4444]' : ''
-              }`}
-            />
-            {errors.message && (
-              <p className="text-red-400 text-sm mt-2 ml-2">⚠️ {errors.message}</p>
-            )}
-          </div>
-
-          {/* Submit Button */}
-          <Button 
-            type="submit" 
-            disabled={isSubmitting}
-            className={isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}
+          <form
+            noValidate
+            onSubmit={handleSubmit}
+            onPointerMove={trackGlow}
+            data-glow
+            data-reveal
+            style={{ "--reveal-delay": "120ms" } as CSSProperties}
+            className="glow-card space-y-5 self-start rounded-3xl border border-line/10 bg-card/50 p-6 shadow-[0_0_48px_-18px_rgb(var(--main-color)/0.45)] md:p-8"
           >
-            {isSubmitting ? (
-              <span className="flex items-center gap-2">
-                <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent"></div>
-                Sending...
-              </span>
-            ) : (
-              'Send Message'
-            )}
-          </Button>
-        </form>
+            <p className="eyebrow flex items-center gap-3">
+              <span className="accent-dash" aria-hidden="true" />
+              Send a message
+            </p>
+            <div className="grid gap-5 md:grid-cols-2">
+              <FormField label="Name" placeholder="John Doe" autoComplete="name" {...fieldProps("name")} />
+              <FormField
+                label="Email"
+                type="email"
+                placeholder="john@example.com"
+                autoComplete="email"
+                {...fieldProps("email")}
+              />
+            </div>
+            <FormField label="Subject" placeholder="What is it about?" {...fieldProps("subject")} />
+            <FormField label="Message" placeholder="Tell me about your idea…" multiline {...fieldProps("message")} />
+
+            <div className="flex flex-col-reverse gap-4 pt-1 sm:flex-row sm:items-center sm:justify-between">
+              <div role="status" aria-live="polite" className="text-sm">
+                {submitStatus === "success" && (
+                  <p className="flex items-center gap-2 text-emerald-400">
+                    <i className="ri-checkbox-circle-line text-lg" aria-hidden="true" />
+                    Message sent! I’ll get back to you soon.
+                  </p>
+                )}
+                {submitStatus === "error" && (
+                  <p className="flex items-center gap-2 text-red-400">
+                    <i className="ri-error-warning-line text-lg" aria-hidden="true" />
+                    Sending failed. Please try again or email me directly.
+                  </p>
+                )}
+                {submitStatus === "idle" && (
+                  <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-other/60">
+                    Goes straight to my inbox
+                  </p>
+                )}
+              </div>
+
+              <Button type="submit" disabled={isSubmitting} className="shrink-0">
+                {isSubmitting ? (
+                  <>
+                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                    Sending…
+                  </>
+                ) : (
+                  <>
+                    Send Message
+                    <i
+                      className="ri-send-plane-2-line group-hover/button:-translate-y-0.5 group-hover/button:translate-x-0.5"
+                      aria-hidden="true"
+                    />
+                  </>
+                )}
+              </Button>
+            </div>
+          </form>
+        </div>
       </div>
     </section>
   );
-}
+};
 
-export default ContactMe;
+export default ContactMeSection;

@@ -1,197 +1,128 @@
-import SectionTitle from "@/components/custom/SectionTitle";
-import { useEffect, useState } from "react";
-import Button from "@/components/buttons/Button";
-import proj1 from "@/assets/images/cyber-losowanie.webp";
-import proj2 from "@/assets/images/store-app.webp";
-import proj3 from "@/assets/images/portfolio-web.webp";
-import { TAGS } from "@/config/tags";
+import { CSSProperties, useRef } from "react";
+import BrowserFrame from "@/components/ui/BrowserFrame";
+import { ButtonLink } from "@/components/ui/Button";
+import SectionHeading from "@/components/ui/SectionHeading";
+import { projects } from "@/content/projects";
+import { useStackedCards } from "@/hooks/useStackedCards";
+import { Project } from "@/types/types";
 
-const projects = [
-	{
-		title: "Cyber Losowanie",
-		description:
-			"Full-stack project with a React frontend and a .NET API that enables friends to create a Secret Santa event and draw pairings. Each participant first selects themselves, then opens a “present” to privately reveal the person they’ll be gifting to",
-		image: proj1,
-		githubUrl: "https://github.com/majowielki/CyberLosowanie",
-		liveUrl: "https://cyberlosowanie20250822170522-csbsa4avhcajb8bx.canadacentral-01.azurewebsites.net/",
-		tags: [
-			TAGS.react,
-			TAGS.typescript,
-			TAGS.tailwindcss,
-			TAGS.redux,
-			TAGS.aspnetcore,
-			TAGS.csharp,
-			TAGS.restapi,
-			TAGS.entityframework,
-			TAGS.monolith,
-			TAGS.sqlserver,
-			TAGS.xunit,
-		],
-	},
-	{
-		title: "E-commerce Store",
-		description:
-			"Full-stack e-commerce platform for a furniture store, powered by Dockerized API microservices and a modern React front end. Users can search products, make purchases, and try a demo admin dashboard.",
-		image: proj2,
-		githubUrl: "https://github.com/majowielki/Store-app",
-		liveUrl: "https://store-app-ui-new.mangocoast-91b8ba19.polandcentral.azurecontainerapps.io",
-		tags: [
-			TAGS.react,
-			TAGS.typescript,
-			TAGS.tailwindcss,
-			TAGS.redux,
-			TAGS.aspnetcore,
-			TAGS.csharp,
-			TAGS.restapi,
-			TAGS.entityframework,
-			TAGS.docker,
-			TAGS.rabbitmq,
-			TAGS.redis,
-			TAGS.microservices,
-			TAGS.postgresql,
-			TAGS.xunit,
-		],
-	},
-	{
-		title: "Portfolio Website",
-		description:
-			"A modern, responsive portfolio site built with React and powered by Tailwind CSS for a clean and modern interface.",
-		image: proj3,
-		githubUrl: "https://github.com/majowielki/Portfolio",
-		tags: [
-			TAGS.react,
-			TAGS.typescript,
-			TAGS.tailwindcss,
-			TAGS.responsiveDesign,
-		],
-	},
-];
+const hostname = (url: string) => new URL(url).hostname.replace(/^www\./, "");
+const pad = (value: number) => String(value).padStart(2, "0");
+
+interface ProjectCardProps {
+  project: Project;
+  index: number;
+}
+
+const ProjectCard = ({ project, index }: ProjectCardProps) => {
+  const previewUrl = project.liveUrl ?? project.githubUrl;
+  const titleId = `project-${index}`;
+
+  return (
+    <article
+      data-stack-card
+      aria-labelledby={titleId}
+      className="project-card"
+      style={{ "--i": index } as CSSProperties}
+    >
+      <div className="project-card__inner relative overflow-hidden rounded-[28px] border border-line/[0.08] bg-sec p-5 shadow-[0_-24px_60px_-30px_rgb(0_0_0/0.9)] sm:p-7 lg:p-10">
+        <div className="grid grid-cols-[minmax(0,1fr)] gap-x-12 gap-y-6 [grid-template-areas:'meta'_'title'_'media'_'body'] lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:grid-rows-[auto_auto_1fr] lg:[grid-template-areas:'meta_media'_'title_media'_'body_media']">
+          <p className="flex items-center justify-between gap-4 font-mono text-xs text-other [grid-area:meta]">
+            <span>
+              <span className="text-main">{pad(index + 1)}</span> / {pad(projects.length)}
+            </span>
+            <span className="uppercase tracking-[0.2em]">{project.category}</span>
+          </p>
+
+          <h3 id={titleId} className="text-3xl font-bold tracking-tight [grid-area:title] md:text-5xl">
+            {project.title}
+          </h3>
+
+          <a
+            href={previewUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            tabIndex={-1}
+            aria-hidden="true"
+            className="group/media block [grid-area:media] lg:self-center"
+          >
+            <BrowserFrame url={hostname(previewUrl)}>
+              <img
+                src={project.image}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                className="h-full w-full object-cover object-top transition-transform duration-1000 ease-expo group-hover/media:scale-[1.04]"
+              />
+              <span className="absolute bottom-4 right-4 flex translate-y-2 items-center gap-1.5 rounded-full border border-line/10 bg-bg/85 px-3.5 py-1.5 text-xs font-medium opacity-0 backdrop-blur-md transition duration-500 ease-expo group-hover/media:translate-y-0 group-hover/media:opacity-100">
+                {project.liveUrl ? "Open live demo" : "View source"}
+                <i className="ri-arrow-right-up-line text-main" />
+              </span>
+            </BrowserFrame>
+          </a>
+
+          <div className="flex flex-col [grid-area:body]">
+            <p className="leading-relaxed text-other md:text-lg">{project.description}</p>
+
+            <ul className="mt-6 flex flex-wrap gap-2" aria-label="Technologies">
+              {project.tags.map((tag) => (
+                <li
+                  key={tag.label}
+                  className="inline-flex items-center gap-2 rounded-full border border-line/10 bg-line/[0.03] px-3 py-1.5 text-[13px] font-medium text-text/85"
+                >
+                  <span className={`h-1.5 w-1.5 rounded-full ${tag.color}`} aria-hidden="true" />
+                  {tag.label}
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-8 flex flex-wrap gap-3 lg:mt-auto lg:pt-8">
+              {project.liveUrl && (
+                <ButtonLink href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+                  Live Demo
+                  <i
+                    className="ri-arrow-right-up-line group-hover/button:-translate-y-0.5 group-hover/button:translate-x-0.5"
+                    aria-hidden="true"
+                  />
+                </ButtonLink>
+              )}
+              <ButtonLink href={project.githubUrl} variant="outline" target="_blank" rel="noopener noreferrer">
+                <i className="ri-github-fill" aria-hidden="true" />
+                Source Code
+              </ButtonLink>
+            </div>
+          </div>
+        </div>
+
+        <div className="project-card__shade pointer-events-none absolute inset-0 bg-black" aria-hidden="true" />
+      </div>
+    </article>
+  );
+};
 
 const MyProjectsSection = () => {
-	const [flippedIdx, setFlippedIdx] = useState<number | null>(null);
-	const [showTapHint, setShowTapHint] = useState(false);
+  const stackRef = useRef<HTMLDivElement>(null);
+  useStackedCards(stackRef);
 
-	useEffect(() => {
-		if (typeof window === 'undefined') return;
-		const updateHint = () => {
-			let cols = 1;
-			if (window.matchMedia('(min-width: 1280px)').matches) {
-				cols = 3; // xl breakpoint: 3 columns
-			} else if (window.matchMedia('(min-width: 768px)').matches) {
-				cols = 2; // md breakpoint: 2 columns
-			}
-			setShowTapHint(projects.length > cols);
-			// If switching to xl (hover mode), ensure no card remains flipped via state
-			if (cols === 3) {
-				setFlippedIdx(null);
-			}
-		};
-		updateHint();
-		window.addEventListener('resize', updateHint);
-		return () => window.removeEventListener('resize', updateHint);
-	}, []);
+  return (
+    <section id="Projects" className="py-24 md:py-32">
+      <div className="container-x">
+        <SectionHeading
+          index="03"
+          label="Projects"
+          description="A few things I’ve built end to end – each one live or open source, so you can poke around."
+        >
+          My <span className="text-main">Projects</span>
+        </SectionHeading>
 
-	const handleCardClick = (idx: number) => {
-		if (typeof window !== "undefined" && window.matchMedia("(min-width: 1280px)").matches) {
-			// On wide desktop (xl and up), keep hover-based flip; ignore click
-			return;
-		}
-		setFlippedIdx(prev => (prev === idx ? null : idx));
-	};
-	return (
-		<section
-			id="Projects"
-			className="min-h-screen flex flex-col items-center justify-center px-4 py-12"
-		>
-			{/* Title */}
-			<div className="w-full flex justify-center mb-12 md:mb-16">
-				<SectionTitle>
-					My <span className="text-main">Projects</span>
-				</SectionTitle>
-			</div>
-
-			<div className="w-full max-w-6xl lg:max-w-7xl grid grid-cols-[minmax(0,340px)] md:grid-cols-[repeat(2,minmax(0,340px))] xl:grid-cols-[repeat(3,minmax(0,360px))] justify-center gap-6 md:gap-8 xl:gap-10 items-stretch">
-				{projects.map((project, index) => (
-					<div
-						key={project.title}
-						className={`flip-card ${flippedIdx === index ? 'is-flipped' : ''} ${showTapHint ? 'tap-ring-on' : ''} rounded-[28px] transition-all duration-500 hover:-translate-y-1 hover:scale-[1.03] cursor-pointer lg:cursor-default h-[470px] w-full min-w-0 overflow-hidden`}
-						role="button"
-						tabIndex={0}
-						onClick={() => handleCardClick(index)}
-					>
-						<div className="flip-card-inner">
-							{/* Front */}
-							<div className="flip-card-front bg-[#2d343f] p-5 flex flex-col relative">
-								<img
-									src={project.image}
-									alt={project.title}
-									loading="lazy"
-									decoding="async"
-									className="w-full rounded-[24px] mb-4 object-cover"
-									style={{ height: 200 }}
-								/>
-								<h4 className="text-[22px] md:text-[24px] font-bold mb-2 leading-snug break-words">
-									{project.title}
-								</h4>
-								<p className="text-other text-[15px] md:text-base break-words">
-									{project.description}
-								</p>
-
-								{/* Tap hint icon - show below xl only and only if grid spans >= 2 rows */}
-								{showTapHint && (
-									<i
-										className="ri-share-forward-line xl:hidden absolute bottom-3 right-3 text-main text-[22px] opacity-80"
-										aria-hidden="true"
-									/>
-								)}
-
-							</div>
-
-							{/* Back */}
-							<div
-								className="flip-card-back bg-[#2d343f] p-5 flex flex-col items-center justify-center text-center relative"
-								onClick={(e) => { e.stopPropagation(); handleCardClick(index); }}
-							>
-								<h4 className="text-[22px] font-bold mb-4 leading-snug">
-									{project.title}
-								</h4>
-								{/* Tags in manual order */}
-								<div className="flex flex-wrap items-center justify-center gap-2 mb-6">
-									{project.tags.map((tag) => (
-										<span
-											key={tag.label}
-											className={`px-3 py-1 rounded-full text-sm ${tag.color}`}
-										>
-											{tag.label}
-										</span>
-									))}
-								</div>
-								<div className="flex flex-wrap items-center justify-center gap-3">
-									{project.liveUrl && (
-										<Button as="a" href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-											View Demo
-										</Button>
-									)}
-									{project.githubUrl && (
-										<Button as="a" href={project.githubUrl} variant="outline" target="_blank" rel="noopener noreferrer">
-											GitHub
-										</Button>
-									)}
-								</div>
-								{/* Tap hint icon on back - below xl only, to allow flipping back */}
-								{showTapHint && (
-									<i
-										className="ri-share-forward-line xl:hidden absolute bottom-3 right-3 text-main text-[22px] opacity-80"
-										aria-hidden="true"
-									/>
-								)}
-							</div>
-						</div>
-					</div>
-				))}
-			</div>
-		</section>
-	);
+        <div ref={stackRef} className="project-stack flex flex-col gap-6 lg:gap-24">
+          {projects.map((project, index) => (
+            <ProjectCard key={project.title} project={project} index={index} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default MyProjectsSection;

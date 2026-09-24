@@ -23,6 +23,10 @@ Personal portfolio website of a Full Stack .NET & React developer: about me, ski
 - Contact form with client-side validation, delivered through EmailJS
 - Downloadable CV
 
+## Credits
+
+Technology logos come from [Devicon](https://github.com/devicons/devicon) (MIT) and the [.NET brand repository](https://github.com/dotnet/brand) (CC0) – see `src/assets/tech/LICENSE.txt`.
+
 ## Contact
 
 - [LinkedIn](https://www.linkedin.com/in/micha%C5%82-majewski-/)
