@@ -25,8 +25,8 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
       className="project-card"
       style={{ "--i": index } as CSSProperties}
     >
-      <div className="project-card__inner relative overflow-hidden rounded-[28px] border border-line/[0.08] bg-sec p-5 shadow-[0_-24px_60px_-30px_rgb(0_0_0/0.9)] sm:p-7 lg:p-10">
-        <div className="grid grid-cols-[minmax(0,1fr)] gap-x-12 gap-y-6 [grid-template-areas:'meta'_'title'_'media'_'body'] lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:grid-rows-[auto_auto_1fr] lg:[grid-template-areas:'meta_media'_'title_media'_'body_media']">
+      <div className="project-card__inner relative overflow-hidden rounded-[28px] border border-line/[0.08] bg-sec p-5 shadow-[0_-24px_60px_-30px_rgb(0_0_0/0.9)] sm:p-7 lg:flex lg:flex-col lg:p-10">
+        <div className="grid grid-cols-[minmax(0,1fr)] gap-x-12 gap-y-6 lg:flex-1 [grid-template-areas:'meta'_'title'_'media'_'body'] lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:grid-rows-[auto_auto_1fr] lg:[grid-template-areas:'meta_media'_'title_media'_'body_media']">
           <p className="flex items-center justify-between gap-4 font-mono text-xs text-other [grid-area:meta]">
             <span>
               <span className="text-main">{pad(index + 1)}</span> / {pad(projects.length)}
@@ -107,11 +107,7 @@ const MyProjectsSection = () => {
   return (
     <section id="Projects" className="py-24 md:py-32">
       <div className="container-x">
-        <SectionHeading
-          index="03"
-          label="Projects"
-          description="A few things I’ve built end to end – each one live or open source, so you can poke around."
-        >
+        <SectionHeading index="03" label="Projects">
           My <span className="text-main">Projects</span>
         </SectionHeading>
 

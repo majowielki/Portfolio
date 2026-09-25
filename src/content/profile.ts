@@ -37,7 +37,7 @@ export const socials: SocialLink[] = [
 
 export const navItems: NavItem[] = [
   { label: "About", section: "AboutMe" },
-  { label: "Skills", section: "Skills" },
+  { label: "Stack", section: "Stack" },
   { label: "Projects", section: "Projects" },
   { label: "Contact", section: "Contact" },
 ];

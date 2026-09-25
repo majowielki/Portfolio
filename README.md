@@ -1,6 +1,6 @@
 # Michał Majewski – Portfolio
 
-Personal portfolio website of a Full Stack .NET & React developer: about me, skills, projects and a contact form.
+Personal portfolio website of a Full Stack .NET & React developer: about me, tech stack, projects and a contact form.
 
 **Live:** https://lemon-forest-0a1d05503.2.azurestaticapps.net
 

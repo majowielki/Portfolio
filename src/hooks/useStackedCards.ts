@@ -1,7 +1,10 @@
 import { RefObject, useEffect } from "react";
 
-const STACK_OFFSET = 20;
-const EDGE_GAP = 32;
+// Covered cards peek out by TAB_OFFSET (number + category row visible), or by EDGE_OFFSET on shorter screens.
+const TAB_OFFSET = 64;
+const EDGE_OFFSET = 16;
+const TOP_GAP = 32;
+const BOTTOM_GAP = 16;
 
 export const useStackedCards = (containerRef: RefObject<HTMLElement>) => {
   useEffect(() => {
@@ -9,15 +12,23 @@ export const useStackedCards = (containerRef: RefObject<HTMLElement>) => {
     if (!container) return;
 
     const cards = Array.from(container.querySelectorAll<HTMLElement>("[data-stack-card]"));
+    const desktop = window.matchMedia("(min-width: 1024px)");
     let frame = 0;
 
     const measure = () => {
+      container.dataset.stack = "off";
+      if (!desktop.matches || cards.length < 2) return;
+
       const headerHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--header-h")) || 0;
-      cards.forEach((card, index) => {
-        const preferredTop = headerHeight + EDGE_GAP + index * STACK_OFFSET;
-        const fullyVisibleTop = window.innerHeight - card.offsetHeight - EDGE_GAP / 2;
-        card.style.setProperty("--stick-top", `${Math.min(preferredTop, fullyVisibleTop)}px`);
-      });
+      const cardHeight = Math.max(...cards.map((card) => card.offsetHeight));
+      const room = window.innerHeight - headerHeight - TOP_GAP - BOTTOM_GAP - cardHeight;
+      const offset = [TAB_OFFSET, EDGE_OFFSET].find((candidate) => candidate * (cards.length - 1) <= room);
+      if (offset === undefined) return;
+
+      container.style.setProperty("--stack-offset", `${offset}px`);
+      container.style.setProperty("--card-h", `${cardHeight}px`);
+      container.style.setProperty("--n", String(cards.length));
+      container.dataset.stack = "on";
     };
 
     const update = () => {

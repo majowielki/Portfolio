@@ -3,15 +3,11 @@ import SectionHeading from "@/components/ui/SectionHeading";
 import { skillCategories } from "@/content/skills";
 import { trackGlow } from "@/utils/glow";
 
-const MySkillsSection = () => (
-  <section id="Skills" className="py-24 md:py-32">
+const MyStackSection = () => (
+  <section id="Stack" className="py-24 md:py-32">
     <div className="container-x">
-      <SectionHeading
-        index="02"
-        label="Skills"
-        description="The stack I use to design, build and ship full-stack applications – from the database all the way to the UI."
-      >
-        My <span className="text-main">Skills</span>
+      <SectionHeading index="02" label="Stack">
+        My <span className="text-main">Stack</span>
       </SectionHeading>
 
       <div className="glow-group grid grid-cols-[minmax(0,1fr)] gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-[minmax(0,9fr)_minmax(0,11fr)]" onPointerMove={trackGlow}>
@@ -61,4 +57,4 @@ const MySkillsSection = () => (
   </section>
 );
 
-export default MySkillsSection;
+export default MyStackSection;

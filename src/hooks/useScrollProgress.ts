@@ -10,7 +10,7 @@ export const useScrollProgress = (barRef: RefObject<HTMLElement>) => {
       frame = 0;
       const max = document.documentElement.scrollHeight - window.innerHeight;
       const progress = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
-      barRef.current?.style.setProperty("transform", `scaleX(${progress})`);
+      barRef.current?.style.setProperty("clip-path", `inset(-6px ${(1 - progress) * 100}% -6px 0)`);
       setScrolled(window.scrollY > 8);
     };
 

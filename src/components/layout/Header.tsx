@@ -140,10 +140,10 @@ const Header = () => {
       />
       <div
         ref={progressRef}
-        className={`absolute inset-x-0 bottom-0 z-10 h-stroke origin-left bg-main shadow-[0_0_12px_rgb(var(--main-color)/0.8)] transition-opacity duration-300 ${
+        className={`absolute inset-x-0 bottom-0 z-10 h-stroke bg-main shadow-[0_0_6px_rgb(var(--main-color)/0.55)] transition-opacity duration-300 ${
           isMenuOpen ? "opacity-0" : ""
         }`}
-        style={{ transform: "scaleX(0)" }}
+        style={{ clipPath: "inset(-6px 100% -6px 0)" }}
         aria-hidden="true"
       />
 

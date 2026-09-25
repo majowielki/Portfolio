@@ -7,7 +7,7 @@ import AboutMeSection from "@/sections/AboutMeSection";
 import ContactMeSection from "@/sections/ContactMeSection";
 import HeroSection from "@/sections/HeroSection";
 import MyProjectsSection from "@/sections/MyProjectsSection";
-import MySkillsSection from "@/sections/MySkillsSection";
+import MyStackSection from "@/sections/MyStackSection";
 
 const Homescreen = () => {
   useRevealOnScroll();
@@ -26,7 +26,7 @@ const Homescreen = () => {
         <main id="main">
           <HeroSection />
           <AboutMeSection />
-          <MySkillsSection />
+          <MyStackSection />
           <MyProjectsSection />
           <ContactMeSection />
         </main>
