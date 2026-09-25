@@ -70,7 +70,7 @@ const ContactRow = ({ icon, label, value, href, external, copyValue }: ContactRo
     {copyValue && <CopyButton value={copyValue} label={label.toLowerCase()} />}
     {external && (
       <i
-        className="ri-arrow-right-up-line text-lg text-other transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-main"
+        className="ri-arrow-right-up-line pointer-events-none text-lg text-other transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-main"
         aria-hidden="true"
       />
     )}
